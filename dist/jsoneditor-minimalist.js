@@ -24,7 +24,7 @@
  * Copyright (c) 2011-2019 Jos de Jong, http://jsoneditoronline.org
  *
  * @author  Jos de Jong, <wjosdejong@gmail.com>
- * @version 5.29.1
+ * @version 5.99.3
  * @date    2019-02-20
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -8865,8 +8865,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
+	    var choices = this.parent && this.editor.options.choices[this.parent.field] || (this.enum && {enum: this.enum, append: []});
 	    // create select box when this node has an enum object
-	    if (this.enum && this.editable.value) {
+	    if (choices && this.editable.value) {
 	      if (!this.dom.select) {
 	        this.dom.select = document.createElement('select');
 	        this.id = this.field + "_" + new Date().getUTCMilliseconds();
@@ -8880,10 +8881,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.dom.select.appendChild(this.dom.select.option);
 
 	        //Iterate all enum values and add them as options
-	        for(var i = 0; i < this.enum.length; i++) {
+	        for(var i = 0; i < choices.enum.length; i++) {
 	          this.dom.select.option = document.createElement('option');
-	          this.dom.select.option.value = this.enum[i];
-	          this.dom.select.option.innerHTML = this.enum[i];
+	          this.dom.select.option.value = choices.enum[i];
+	          var h = choices.append[i] ? (choices.enum[i] + '(' + choices.append[i] + ')') : choices.enum[i];
+	          this.dom.select.option.innerHTML = h;
 	          if(this.dom.select.option.value == this.value){
 	            this.dom.select.option.selected = true;
 	          }
